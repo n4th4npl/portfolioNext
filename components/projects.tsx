@@ -1,13 +1,26 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import SectionHeading from "./sectionHeading";
 import { projectsData } from "@/lib/data";
 import Image from "next/image";
+import { useInView } from "react-intersection-observer";
 import { useScroll, motion, useTransform } from "framer-motion";
+import { useActiveSectionContext } from "@/context/active-section-context";
 
 export default function Projects() {
+  const { ref, inView } = useInView({
+    threshold: 0.5
+  });
+  const { setActiveSection } = useActiveSectionContext();
+
+  useEffect(() => {
+    if (inView) {
+      setActiveSection("Projects");
+    }
+  }, [inView, setActiveSection])
+
   return (
-    <section>
+    <section ref={ref} id="projects" className="scroll-mt-28">
       <SectionHeading>My Projects</SectionHeading>
       <div>
         {projectsData.map((project, index) => (
@@ -32,14 +45,15 @@ function Project({ title, description, tags, imageUrl }: ProjectProps) {
   const opacityProgress = useTransform(scrollYProgress, [0.6, 1], [0.8, 1]);
   return (
     <motion.div
+  className="group mb-3 sm:mb-8 last:mb-0 "
       style={{
         scale: scaleProgress,
         opacity: opacityProgress,
       }}
       ref={ref} 
     >
-      <section className="group bg-gray-100 cursor-pointer max-w-[42rem] border border-black/5 overflow-hidden sm:pr-8 relative sm:h-[20rem] mb-3 sm:mb-8 last:mb-10 even:pl-8">
-        <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full group-even:ml-[18rem]">
+      <section className="bg-gray-100 rounded-md cursor-pointer max-w-[42rem] border border-black/5 overflow-hidden sm:pr-8 relative sm:h-[20rem]">
+        <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full group-even:ml-[18rem] group-even:pl-8">
           <h3 className="text-2xl font-semibold">{title}</h3>
           <p className="mt-2 leading-relaxed text-gray-700">{description}</p>
           <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
