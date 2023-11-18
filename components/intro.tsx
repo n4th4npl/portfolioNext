@@ -1,24 +1,17 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from 'react';
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import { BsArrowRight, BsLinkedin, BsDownload } from "react-icons/bs";
+import { useSectionInView } from "@/lib/hooks";
 import { useActiveSectionContext } from "@/context/active-section-context";
 
 export default function Intro() {
-  const { ref, inView } = useInView({
-    threshold: 0.5
-  });
-  const { setActiveSection } = useActiveSectionContext();
-
-  useEffect(() => {
-    if (inView) {
-      setActiveSection("Home");
-    }
-  }, [inView, setActiveSection])
-  
+  const { ref } = useSectionInView('Home', 0.5);
+  const {
+    setActiveSection,
+    setTimeOfLastClick
+  } = useActiveSectionContext();
 
   return (
     <section ref={ref} id="home" className="mb-2 max-w-[50rem] scroll-mt-[100rem] text-center sm:mb-0">
@@ -82,6 +75,10 @@ export default function Intro() {
           <Link
             className=" group bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-gray-950 active:scale-105 transition"
             href="#contact"
+            onClick={() => {
+              setTimeOfLastClick(Date.now())
+              setActiveSection("Contact")
+            }}
           >
             Contact Me <BsArrowRight className="opacity-70 group-hover:translate-x-1 transition" />
           </Link>
@@ -94,7 +91,7 @@ export default function Intro() {
           }}
         >
         <a
-          className="group bg-white text-gray-900 px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:text-gray-950  active:scale-105 transition border border-black/10"
+          className="group bg-white text-gray-900 px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 hover:text-gray-950  active:scale-105 transition borderBlack"
           href=""
         >
           Download CV <BsDownload className="opacity-60 group-hover:translate-x-1 transition" />
@@ -109,7 +106,7 @@ export default function Intro() {
         >
         <a
           href=""
-          className="group bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full outline-none focus:scale-[1.15] hover:scale-[1.15] hover:text-gray-950  active:scale-105 transition border border-black/10"
+          className="group bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full outline-none focus:scale-[1.15] hover:scale-[1.15] hover:text-gray-950  active:scale-105 transition borderBlack"
         >
           <BsLinkedin />
         </a>

@@ -2,4 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    --line-color:  linear-gradient(0deg, hsla(210, 20%, 98%, 1) 0%, hsla(220, 13%, 91%, 1) 49%, hsla(210, 20%, 98%, 1) 100%);
+}
 
+.borderBlack {
+    @apply border border-black/10
+}

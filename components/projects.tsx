@@ -3,21 +3,11 @@ import React, { useRef, useEffect } from "react";
 import SectionHeading from "./sectionHeading";
 import { projectsData } from "@/lib/data";
 import Image from "next/image";
-import { useInView } from "react-intersection-observer";
 import { useScroll, motion, useTransform } from "framer-motion";
-import { useActiveSectionContext } from "@/context/active-section-context";
+import { useSectionInView } from "@/lib/hooks";
 
 export default function Projects() {
-  const { ref, inView } = useInView({
-    threshold: 0.5
-  });
-  const { setActiveSection } = useActiveSectionContext();
-
-  useEffect(() => {
-    if (inView) {
-      setActiveSection("Projects");
-    }
-  }, [inView, setActiveSection])
+  const { ref } = useSectionInView('Projects', 0.5);
 
   return (
     <section ref={ref} id="projects" className="scroll-mt-28">
@@ -52,7 +42,7 @@ function Project({ title, description, tags, imageUrl }: ProjectProps) {
       }}
       ref={ref} 
     >
-      <section className="bg-gray-100 rounded-md cursor-pointer max-w-[42rem] border border-black/5 overflow-hidden sm:pr-8 relative sm:h-[20rem]">
+      <section className="bg-gray-100 rounded-md cursor-pointer max-w-[42rem] border border-black/5 overflow-hidden sm:pr-8 relative sm:h-[20rem] mb-28">
         <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full group-even:ml-[18rem] group-even:pl-8">
           <h3 className="text-2xl font-semibold">{title}</h3>
           <p className="mt-2 leading-relaxed text-gray-700">{description}</p>
